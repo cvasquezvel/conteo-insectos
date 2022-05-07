@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Aplicación del modelo lineal general</title>
-  <meta name="description" content="Aplicación del modelo lineal general" />
+  <title>Chapter 3 Modelo de regresión lineal multiple completo | Aplicación del modelo lineal general</title>
+  <meta name="description" content="Chapter 3 Modelo de regresión lineal multiple completo | Aplicación del modelo lineal general" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Aplicación del modelo lineal general" />
+  <meta property="og:title" content="Chapter 3 Modelo de regresión lineal multiple completo | Aplicación del modelo lineal general" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Aplicación del modelo lineal general" />
+  <meta name="twitter:title" content="Chapter 3 Modelo de regresión lineal multiple completo | Aplicación del modelo lineal general" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="análisis-exploratorio-y-descriptivo.html"/>
+<link rel="prev" href="análisis-exploratorio-y-descriptivo.html"/>
+<link rel="next" href="selección-de-variables-paso-a-paso.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -166,28 +166,58 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Aplicación del modelo lineal general</h1>
-<h2 class="subtitle"><em>Recuento de escarabajos en un área</em></h2>
-<p class="author"><em>Vásquez V., C.R.A.</em></p>
-<p class="date"><em>2022-05-07</em></p>
+<div id="modelo-de-regresión-lineal-multiple-completo" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Modelo de regresión lineal multiple completo<a href="modelo-de-regresión-lineal-multiple-completo.html#modelo-de-regresión-lineal-multiple-completo" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="resumen-del-modelo" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Resumen del modelo<a href="modelo-de-regresión-lineal-multiple-completo.html#resumen-del-modelo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A continuación presentamos el modelo completo:</p>
+<p><span class="math display">\[Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\beta_3*Humedad+\beta_4*Hembras+\beta_5*Urbano+\epsilon_i\]</span></p>
+<pre><code>
+Call:
+lm(formula = Recuento ~ ., data = datos)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.4092  -3.1671  -0.4643   2.5792  12.7935 
+
+Coefficients:
+              Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)  25.232477   4.691091   5.379          0.000000214 ***
+Temperatura   1.617856   0.072173  22.416 &lt; 0.0000000000000002 ***
+Altura        0.537264   0.003014 178.255 &lt; 0.0000000000000002 ***
+Humedad       0.007299   0.051288   0.142               0.8870    
+MachoHembras -0.165017   0.989351  -0.167               0.8677    
+UrbanoSí      1.248129   0.712726   1.751               0.0815 .  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 5.016 on 194 degrees of freedom
+Multiple R-squared:  0.9953,    Adjusted R-squared:  0.9952 
+F-statistic:  8185 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
-<div id="reconocimiento-de-variables" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Reconocimiento de variables<a href="index.html#reconocimiento-de-variables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Para crear un modelo de regresión lineal se tomó como variable dependiente al <em>Recuento de escarabajos en un área</em>. Las posibles variables predictoras fueron:</p>
-<p><em>Temperatura</em>: Temperatura (°C) ambiental.</p>
-<p><em>Altura</em>: Altura (msnsm) del ambiente.</p>
-<p><em>Humedad</em>: Humedad relativa (%) ambiental.</p>
-<p><em>Machos</em>: Genero predominante en el área (0 si predominan machos, 1 si hembras).</p>
-<p><em>Urbano</em>: 0 (No) si el conteo se hizo en un área no urbana, 1 (Sí) si el conteo se hizo en un área urbana.</p>
+<div id="análisis-de-variancia" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Análisis de variancia<a href="modelo-de-regresión-lineal-multiple-completo.html#análisis-de-variancia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>Analysis of Variance Table
+
+Response: Recuento
+             Df  Sum Sq Mean Sq    F value               Pr(&gt;F)    
+Temperatura   1    5306    5306   210.8877 &lt; 0.0000000000000002 ***
+Altura        1 1024231 1024231 40709.3013 &lt; 0.0000000000000002 ***
+Humedad       1       0       0     0.0164              0.89816    
+Macho         1       1       1     0.0199              0.88785    
+Urbano        1      77      77     3.0667              0.08149 .  
+Residuals   194    4881      25                                    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="análisis-exploratorio-y-descriptivo.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="análisis-exploratorio-y-descriptivo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="selección-de-variables-paso-a-paso.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

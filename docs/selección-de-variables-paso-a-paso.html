@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Aplicación del modelo lineal general</title>
-  <meta name="description" content="Aplicación del modelo lineal general" />
+  <title>Chapter 4 Selección de variables paso a paso | Aplicación del modelo lineal general</title>
+  <meta name="description" content="Chapter 4 Selección de variables paso a paso | Aplicación del modelo lineal general" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Aplicación del modelo lineal general" />
+  <meta property="og:title" content="Chapter 4 Selección de variables paso a paso | Aplicación del modelo lineal general" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Aplicación del modelo lineal general" />
+  <meta name="twitter:title" content="Chapter 4 Selección de variables paso a paso | Aplicación del modelo lineal general" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="análisis-exploratorio-y-descriptivo.html"/>
+<link rel="prev" href="modelo-de-regresión-lineal-multiple-completo.html"/>
+<link rel="next" href="modelo-de-regresión-lineal-final.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -166,28 +166,234 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Aplicación del modelo lineal general</h1>
-<h2 class="subtitle"><em>Recuento de escarabajos en un área</em></h2>
-<p class="author"><em>Vásquez V., C.R.A.</em></p>
-<p class="date"><em>2022-05-07</em></p>
+<div id="selección-de-variables-paso-a-paso" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Selección de variables paso a paso<a href="selección-de-variables-paso-a-paso.html#selección-de-variables-paso-a-paso" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="partición-inicial-de-la-base-de-datos" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Partición inicial de la base de datos<a href="selección-de-variables-paso-a-paso.html#partición-inicial-de-la-base-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="resumen-de-la-base-de-datos-de-entrenamiento" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Resumen de la base de datos de entrenamiento<a href="selección-de-variables-paso-a-paso.html#resumen-de-la-base-de-datos-de-entrenamiento" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>  Temperatura        Altura       Humedad          Macho     Urbano     Recuento    
+ Min.   :12.00   Min.   : 25   Min.   :70.29   Machos :130   No:74   Min.   : 67.0  
+ 1st Qu.:16.00   1st Qu.:141   1st Qu.:77.21   Hembras: 31   Sí:87   1st Qu.:134.0  
+ Median :21.00   Median :231   Median :81.58                         Median :190.0  
+ Mean   :20.62   Mean   :255   Mean   :81.95                         Mean   :196.7  
+ 3rd Qu.:25.00   3rd Qu.:367   3rd Qu.:88.01                         3rd Qu.:254.0  
+ Max.   :30.00   Max.   :495   Max.   :94.31                         Max.   :333.0  </code></pre>
 </div>
-<div id="reconocimiento-de-variables" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Reconocimiento de variables<a href="index.html#reconocimiento-de-variables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Para crear un modelo de regresión lineal se tomó como variable dependiente al <em>Recuento de escarabajos en un área</em>. Las posibles variables predictoras fueron:</p>
-<p><em>Temperatura</em>: Temperatura (°C) ambiental.</p>
-<p><em>Altura</em>: Altura (msnsm) del ambiente.</p>
-<p><em>Humedad</em>: Humedad relativa (%) ambiental.</p>
-<p><em>Machos</em>: Genero predominante en el área (0 si predominan machos, 1 si hembras).</p>
-<p><em>Urbano</em>: 0 (No) si el conteo se hizo en un área no urbana, 1 (Sí) si el conteo se hizo en un área urbana.</p>
+<div id="resumen-de-la-base-de-datos-de-prueba" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Resumen de la base de datos de prueba<a href="selección-de-variables-paso-a-paso.html#resumen-de-la-base-de-datos-de-prueba" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>  Temperatura        Altura         Humedad          Macho    Urbano     Recuento    
+ Min.   :12.00   Min.   : 57.0   Min.   :70.42   Machos :30   No:20   Min.   : 83.0  
+ 1st Qu.:16.00   1st Qu.:133.5   1st Qu.:74.67   Hembras: 9   Sí:19   1st Qu.:137.0  
+ Median :20.00   Median :255.0   Median :80.38                        Median :195.0  
+ Mean   :20.03   Mean   :257.6   Mean   :81.44                        Mean   :197.7  
+ 3rd Qu.:23.50   3rd Qu.:367.5   3rd Qu.:88.61                        3rd Qu.:250.0  
+ Max.   :28.00   Max.   :494.0   Max.   :94.78                        Max.   :321.0  </code></pre>
+</div>
+<div id="verificación-de-la-distribución-de-la-variable-respuesta-recuento" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Verificación de la distribución de la variable respuesta (Recuento)<a href="selección-de-variables-paso-a-paso.html#verificación-de-la-distribución-de-la-variable-respuesta-recuento" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-12-1.png" width="600px" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="forward" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Forward<a href="selección-de-variables-paso-a-paso.html#forward" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="resumen-del-modelo-1" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Resumen del modelo<a href="selección-de-variables-paso-a-paso.html#resumen-del-modelo-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>
+Call:
+lm(formula = Recuento ~ Altura + Temperatura + Urbano, data = datos.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.1978  -3.2243  -0.3167   2.4130  12.1485 
+
+Coefficients:
+            Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) 24.47646    1.88438  12.989 &lt;0.0000000000000002 ***
+Altura       0.53687    0.00290 185.140 &lt;0.0000000000000002 ***
+Temperatura  1.66862    0.07687  21.708 &lt;0.0000000000000002 ***
+UrbanoSí     1.68814    0.77633   2.175              0.0312 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.88 on 157 degrees of freedom
+Multiple R-squared:  0.9955,    Adjusted R-squared:  0.9954 
+F-statistic: 1.164e+04 on 3 and 157 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div id="aic-del-modelo" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> AIC del modelo<a href="selección-de-variables-paso-a-paso.html#aic-del-modelo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 973.239</code></pre>
+</div>
+<div id="coeficientes-del-modelo" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Coeficientes del modelo<a href="selección-de-variables-paso-a-paso.html#coeficientes-del-modelo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-15-1.png" width="600px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="vif-de-las-variables-seleccionadas" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> VIF de las variables seleccionadas<a href="selección-de-variables-paso-a-paso.html#vif-de-las-variables-seleccionadas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>     Altura Temperatura      Urbano 
+   1.008899    1.003479    1.012153 </code></pre>
+</div>
+<div id="mse-del-entrenamiento" class="section level3 hasAnchor" number="4.2.5">
+<h3><span class="header-section-number">4.2.5</span> MSE del entrenamiento<a href="selección-de-variables-paso-a-paso.html#mse-del-entrenamiento" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 23.21906</code></pre>
+</div>
+<div id="indicadores-predictivos-con-la-base-de-datos-de-entrenamiento" class="section level3 hasAnchor" number="4.2.6">
+<h3><span class="header-section-number">4.2.6</span> Indicadores predictivos con la base de datos de entrenamiento<a href="selección-de-variables-paso-a-paso.html#indicadores-predictivos-con-la-base-de-datos-de-entrenamiento" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>     RMSE  Rsquared       MAE 
+4.8186162 0.9955231 3.7545822 </code></pre>
+</div>
+</div>
+<div id="backward" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Backward<a href="selección-de-variables-paso-a-paso.html#backward" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="resumen-del-modelo-2" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Resumen del modelo<a href="selección-de-variables-paso-a-paso.html#resumen-del-modelo-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>
+Call:
+lm(formula = Recuento ~ Temperatura + Altura + Urbano, data = datos.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.1978  -3.2243  -0.3167   2.4130  12.1485 
+
+Coefficients:
+            Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) 24.47646    1.88438  12.989 &lt;0.0000000000000002 ***
+Temperatura  1.66862    0.07687  21.708 &lt;0.0000000000000002 ***
+Altura       0.53687    0.00290 185.140 &lt;0.0000000000000002 ***
+UrbanoSí     1.68814    0.77633   2.175              0.0312 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.88 on 157 degrees of freedom
+Multiple R-squared:  0.9955,    Adjusted R-squared:  0.9954 
+F-statistic: 1.164e+04 on 3 and 157 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div id="aic-del-modelo-1" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> AIC del modelo<a href="selección-de-variables-paso-a-paso.html#aic-del-modelo-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 973.239</code></pre>
+</div>
+<div id="coeficientes-del-modelo-1" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Coeficientes del modelo<a href="selección-de-variables-paso-a-paso.html#coeficientes-del-modelo-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-21-1.png" width="600px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="vif-de-las-variables-seleccionadas-1" class="section level3 hasAnchor" number="4.3.4">
+<h3><span class="header-section-number">4.3.4</span> VIF de las variables seleccionadas<a href="selección-de-variables-paso-a-paso.html#vif-de-las-variables-seleccionadas-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>Temperatura      Altura      Urbano 
+   1.003479    1.008899    1.012153 </code></pre>
+</div>
+<div id="mse-del-entrenamiento-1" class="section level3 hasAnchor" number="4.3.5">
+<h3><span class="header-section-number">4.3.5</span> MSE del entrenamiento<a href="selección-de-variables-paso-a-paso.html#mse-del-entrenamiento-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 23.21906</code></pre>
+</div>
+<div id="indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-1" class="section level3 hasAnchor" number="4.3.6">
+<h3><span class="header-section-number">4.3.6</span> Indicadores predictivos con la base de datos de entrenamiento<a href="selección-de-variables-paso-a-paso.html#indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>     RMSE  Rsquared       MAE 
+4.8186162 0.9955231 3.7545822 </code></pre>
+</div>
+</div>
+<div id="stepwise" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Stepwise<a href="selección-de-variables-paso-a-paso.html#stepwise" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="resumen-del-modelo-3" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Resumen del modelo<a href="selección-de-variables-paso-a-paso.html#resumen-del-modelo-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>
+Call:
+lm(formula = Recuento ~ Altura + Temperatura, data = datos.train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.1057  -3.1063  -0.3891   2.5381  12.9691 
+
+Coefficients:
+             Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) 25.740129   1.813561   14.19 &lt;0.0000000000000002 ***
+Altura       0.536282   0.002921  183.60 &lt;0.0000000000000002 ***
+Temperatura  1.658877   0.077636   21.37 &lt;0.0000000000000002 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.937 on 158 degrees of freedom
+Multiple R-squared:  0.9954,    Adjusted R-squared:  0.9953 
+F-statistic: 1.705e+04 on 2 and 158 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div id="aic-del-modelo-2" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> AIC del modelo<a href="selección-de-variables-paso-a-paso.html#aic-del-modelo-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 976.0164</code></pre>
+</div>
+<div id="coeficientes-del-modelo-2" class="section level3 hasAnchor" number="4.4.3">
+<h3><span class="header-section-number">4.4.3</span> Coeficientes del modelo<a href="selección-de-variables-paso-a-paso.html#coeficientes-del-modelo-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="600px" style="display: block; margin: auto;" /></p>
+</div>
+<div id="vif-de-las-variables-seleccionadas-2" class="section level3 hasAnchor" number="4.4.4">
+<h3><span class="header-section-number">4.4.4</span> VIF de las variables seleccionadas<a href="selección-de-variables-paso-a-paso.html#vif-de-las-variables-seleccionadas-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>     Altura Temperatura 
+   1.000067    1.000067 </code></pre>
+</div>
+<div id="mse-del-entrenamiento-2" class="section level3 hasAnchor" number="4.4.5">
+<h3><span class="header-section-number">4.4.5</span> MSE del entrenamiento<a href="selección-de-variables-paso-a-paso.html#mse-del-entrenamiento-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>[1] 23.91837</code></pre>
+</div>
+<div id="indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-2" class="section level3 hasAnchor" number="4.4.6">
+<h3><span class="header-section-number">4.4.6</span> Indicadores predictivos con la base de datos de entrenamiento<a href="selección-de-variables-paso-a-paso.html#indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>     RMSE  Rsquared       MAE 
+4.8906414 0.9953883 3.8580781 </code></pre>
+</div>
+</div>
+<div id="comparación-de-modelos" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Comparación de modelos<a href="selección-de-variables-paso-a-paso.html#comparación-de-modelos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table style="width:100%;">
+<colgroup>
+<col width="15%" />
+<col width="13%" />
+<col width="26%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><em>Método</em></td>
+<td><span class="math inline">\(AIC\)</span></td>
+<td><span class="math inline">\(R^2\)</span> <strong>ajustado</strong></td>
+<td><span class="math inline">\(RMSE\)</span></td>
+<td><span class="math inline">\(R^2\)</span></td>
+<td><span class="math inline">\(MAE\)</span></td>
+</tr>
+<tr class="even">
+<td><em>Forward</em></td>
+<td>973.239</td>
+<td>99.54</td>
+<td>4.8186162</td>
+<td>0.9955231</td>
+<td>3.7545822</td>
+</tr>
+<tr class="odd">
+<td><em>Backward</em></td>
+<td>973.239</td>
+<td>99.54</td>
+<td>4.8186162</td>
+<td>0.9955231</td>
+<td>3.7545822</td>
+</tr>
+<tr class="even">
+<td><em>Stepwise</em></td>
+<td>976.0164</td>
+<td>99.53</td>
+<td>4.8906414</td>
+<td>0.9953883</td>
+<td>3.8580781</td>
+</tr>
+</tbody>
+</table>
+<p>Se selecciona al modelo Stepwise, por lo que el modelo final considerará a las variables Altura y Temperatura. La variable Macho, no tiene gran aporte predictivo, por ello, fue descartado.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="análisis-exploratorio-y-descriptivo.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="modelo-de-regresión-lineal-multiple-completo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelo-de-regresión-lineal-final.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

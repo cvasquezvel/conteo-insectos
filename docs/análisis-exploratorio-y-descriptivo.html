@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Aplicación del modelo lineal general</title>
-  <meta name="description" content="Aplicación del modelo lineal general" />
+  <title>Chapter 2 Análisis exploratorio y descriptivo | Aplicación del modelo lineal general</title>
+  <meta name="description" content="Chapter 2 Análisis exploratorio y descriptivo | Aplicación del modelo lineal general" />
   <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Aplicación del modelo lineal general" />
+  <meta property="og:title" content="Chapter 2 Análisis exploratorio y descriptivo | Aplicación del modelo lineal general" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Aplicación del modelo lineal general" />
+  <meta name="twitter:title" content="Chapter 2 Análisis exploratorio y descriptivo | Aplicación del modelo lineal general" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="análisis-exploratorio-y-descriptivo.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="modelo-de-regresión-lineal-multiple-completo.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -166,28 +166,56 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Aplicación del modelo lineal general</h1>
-<h2 class="subtitle"><em>Recuento de escarabajos en un área</em></h2>
-<p class="author"><em>Vásquez V., C.R.A.</em></p>
-<p class="date"><em>2022-05-07</em></p>
+<div id="análisis-exploratorio-y-descriptivo" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Análisis exploratorio y descriptivo<a href="análisis-exploratorio-y-descriptivo.html#análisis-exploratorio-y-descriptivo" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="análisis-descriptivo" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Análisis descriptivo<a href="análisis-exploratorio-y-descriptivo.html#análisis-descriptivo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Los datos cuenta con un total de 200 observaciones (n=200).</p>
+<pre><code>Descriptive Statistics  
+datos  
+N: 200  
+
+                    Altura   Humedad   Recuento   Temperatura
+----------------- -------- --------- ---------- -------------
+             Mean   255.54     81.85     196.93         20.50
+          Std.Dev   133.68      7.04      72.10          4.93
+              Min    25.00     70.29      67.00         12.00
+               Q1   138.50     75.73     134.00         16.00
+           Median   247.00     81.47     190.50         20.00
+               Q3   368.50     88.04     255.50         24.00
+              Max   495.00     94.78     333.00         30.00
+              MAD   166.05      8.67      88.96          5.93
+              IQR   228.50     12.28     120.75          8.00
+               CV     0.52      0.09       0.37          0.24
+         Skewness     0.18      0.12       0.15          0.10
+      SE.Skewness     0.17      0.17       0.17          0.17
+         Kurtosis    -1.19     -1.22      -1.13         -1.11
+          N.Valid   200.00    200.00     200.00        200.00
+        Pct.Valid   100.00    100.00     100.00        100.00</code></pre>
+<pre><code>  Temperatura       Altura         Humedad          Macho     Urbano      Recuento    
+ Min.   :12.0   Min.   : 25.0   Min.   :70.29   Machos :160   No: 94   Min.   : 67.0  
+ 1st Qu.:16.0   1st Qu.:139.2   1st Qu.:75.75   Hembras: 40   Sí:106   1st Qu.:134.0  
+ Median :20.0   Median :247.0   Median :81.47                          Median :190.5  
+ Mean   :20.5   Mean   :255.5   Mean   :81.85                          Mean   :196.9  
+ 3rd Qu.:24.0   3rd Qu.:367.8   3rd Qu.:88.03                          3rd Qu.:254.8  
+ Max.   :30.0   Max.   :495.0   Max.   :94.78                          Max.   :333.0  </code></pre>
 </div>
-<div id="reconocimiento-de-variables" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Reconocimiento de variables<a href="index.html#reconocimiento-de-variables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Para crear un modelo de regresión lineal se tomó como variable dependiente al <em>Recuento de escarabajos en un área</em>. Las posibles variables predictoras fueron:</p>
-<p><em>Temperatura</em>: Temperatura (°C) ambiental.</p>
-<p><em>Altura</em>: Altura (msnsm) del ambiente.</p>
-<p><em>Humedad</em>: Humedad relativa (%) ambiental.</p>
-<p><em>Machos</em>: Genero predominante en el área (0 si predominan machos, 1 si hembras).</p>
-<p><em>Urbano</em>: 0 (No) si el conteo se hizo en un área no urbana, 1 (Sí) si el conteo se hizo en un área urbana.</p>
+<div id="gráficos-exploratorios" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Gráficos exploratorios<a href="análisis-exploratorio-y-descriptivo.html#gráficos-exploratorios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-3-1.png" width="250px" style="display: block; margin: auto;" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-4-1.png" width="250px" style="display: block; margin: auto;" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-5-1.png" width="250px" style="display: block; margin: auto;" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-6-1.png" width="250px" style="display: block; margin: auto;" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="250px" style="display: block; margin: auto;" /></p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="análisis-exploratorio-y-descriptivo.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelo-de-regresión-lineal-multiple-completo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
