@@ -21,7 +21,7 @@ options(max.print = 9999,
 
 ## Reconocimiento de variables
 
-Para crear un modelo de regresión lineal simple se tomó como variable dependiente al *Recuento de escarabajos en un área*. Las posibles variables predictoras fueron:
+Para crear un modelo de regresión lineal se tomó como variable dependiente al *Recuento de escarabajos en un área*. Las posibles variables predictoras fueron:
 
 *Temperatura*: Temperatura (°C) ambiental.
 
