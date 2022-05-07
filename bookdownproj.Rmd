@@ -1,0 +1,713 @@
+---
+title: "Aplicación del modelo lineal general"
+author: "Vásquez V., C.R.A."
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+subtitle: Recuento de escarabajos en un área
+institute: InkaStats - Data Science Solutions S.A.C.
+---
+
+```{=html}
+<style>
+body {
+text-align: justify}
+</style>
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(max.print = 9999,
+        scipen = 999)
+```
+
+## Reconocimiento de variables
+
+Para crear un modelo de regresión lineal simple se tomó como variable dependiente al *Recuento de escarabajos en un área*. Las posibles variables predictoras fueron:
+
+*Temperatura*: Temperatura (°C) ambiental.
+
+*Altura*: Altura (msnsm) del ambiente.
+
+*Humedad*: Humedad relativa (%) ambiental.
+
+*Machos*: Genero predominante en el área (0 si predominan machos, 1 si hembras).
+
+*Urbano*: 0 (No) si el conteo se hizo en un área no urbana, 1 (Sí) si el conteo se hizo en un área urbana.
+
+# Análisis exploratorio y descriptivo
+
+## Análisis descriptivo
+
+Los datos cuenta con un total de 200 observaciones (n=200).
+
+\changefontsizes{6pt}
+
+```{r, echo = F, eval=T, comment="", message=F, warning= F}
+datos <- readxl::read_xlsx("datos11.xlsx", sheet = "Sheet1")
+datos$Macho <- factor(datos$Macho,
+                      levels = c(0,1),
+                      labels = c("Machos","Hembras"))
+datos$Urbano <- factor(datos$Urbano,
+                      levels = c(0,1),
+                      labels = c("No","Sí"))
+
+library(summarytools)
+summarytools::descr(datos)
+```
+
+## Análisis descriptivo
+
+\changefontsizes{7pt}
+
+
+```{r, echo = F, eval=T, comment="", message=F, warning= F}
+summary(datos)
+```
+
+## Gráficos exploratorios
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "250px"}
+library(dplyr)
+datos %>%
+    select_if(is.numeric) %>%
+    pairs
+```	
+
+## Gráficos exploratorios
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "250px"}
+library(psych)
+datos %>%
+    select_if(is.numeric) %>%
+    pairs.panels
+```
+
+## Gráficos exploratorios
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "250px"}
+library(ggplot2)
+library(GGally)
+datos %>%
+    ggpairs + theme_bw()
+```
+
+## Gráficos exploratorios
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "250px"}
+library(ggplot2)
+library(GGally)
+datos %>%
+    ggpairs(upper = list(continuous = "density", combo = "box_no_facet"), lower = list(continuous = "points", 
+        combo = "dot_no_facet")) + theme_bw()
+```
+
+## Gráficos exploratorios
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "250px"}
+#Generando gráfico de dispersión del número de bayas cosechables vs los Kg Cosechados por hectárea
+library(ggplot2)
+datos %>% 
+  ggplot(aes(x=Altura,y=Recuento))+
+  geom_point(position = "jitter", size=3, colour="red")+
+  labs( title = "DIAGRAMA DE DISPERSIÓN",
+        subtitle = "Altura vs Recuento")+
+  geom_smooth(method = "lm")+
+  theme_test()
+```
+
+# Modelo de regresión lineal multiple completo
+
+## Resumen del modelo
+
+A continuación presentamos el modelo completo:
+
+$$Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\beta_3*Humedad+\beta_4*Hembras+\beta_5*Urbano+\epsilon_i$$
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+lm(Recuento~.,datos) -> modelo_completo
+summary(modelo_completo)
+```
+
+## Análisis de variancia
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+anova(modelo_completo)
+```
+
+
+# Selección de variables paso a paso
+
+## Partición inicial de la base de datos
+
+### Resumen de la base de datos de entrenamiento
+
+\changefontsizes{6pt}
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+library(caret)
+set.seed(6666)
+train <- createDataPartition(y = datos$Recuento, p = 0.80, list = FALSE, times = 1)
+datos.train <- datos[train, ]
+datos.test  <- datos[-train, ]
+# summarytools::descr(datos.train)
+summary(datos.train)
+```
+
+## Partición inicial de la base de datos
+
+### Resumen de la base de datos de prueba
+
+\changefontsizes{6pt}
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+# summarytools::descr(datos.test)
+summary(datos.test)
+```
+
+## Partición inicial de la base de datos
+
+### Verificación de la distribución de la variable respuesta (Recuento)
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+par(mfrow = c(1,3))
+hist(datos$Recuento,
+                           main = "Datos completos",
+                           sub = c("Media = 196.925"),
+     xlab = "Recuento")
+hist(datos.train$Recuento,
+                           main = "Datos de entrenamiento",
+                           sub = c("Media = 196.7267"),
+     xlab = "Recuento")
+hist(datos.test$Recuento,
+                           main = "Datos de prueba",
+                           sub = c("Media = 197.7436"),
+     xlab = "Recuento")
+```
+
+## Forward
+
+### Resumen del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+step(object = lm(formula = Recuento ~ 1, data = datos.train),
+ direction = "forward",
+ scope = formula(lm(Recuento~.,data=datos)),
+ trace = F) -> modelo_forward
+modelo_forward %>% summary
+```
+
+### AIC del modelo
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+AIC(modelo_forward)
+```
+
+
+## Forward
+
+### Coeficientes del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(tidyverse)
+library(broom)
+modelo_forward %>% 
+ tidy %>% 
+ filter(term != "(Intercept)") %>% 
+ ggplot(aes(x = term, y = estimate)) +
+ geom_col() +
+ labs(title = "Coeficientes del modelo OLS") +
+ theme_bw() +
+ theme(axis.text.x = element_text(size = 8, angle = 90))
+```
+ 
+## Forward
+
+### VIF de las variables seleccionadas
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(faraway)
+modelo_forward %>% vif
+```
+
+### MSE del entrenamiento
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo_forward %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
+(mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
+```
+
+### Indicadores predictivos con la base de datos de entrenamiento
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(caret)
+postResample(predicciones_train, obs = datos.train$Recuento)
+```
+
+## Backward
+
+### Resumen del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+step(object = lm(formula = Recuento ~ ., data = datos.train),
+ direction = "backward",
+ scope = list(upper = ~., lower = ~1),
+ trace = F) -> modelo_backward
+modelo_backward %>% summary
+```
+
+### AIC del modelo
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+AIC(modelo_backward)
+```
+
+## Backward
+
+### Coeficientes del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(tidyverse)
+library(broom)
+modelo_backward %>% 
+ tidy %>% 
+ filter(term != "(Intercept)") %>% 
+ ggplot(aes(x = term, y = estimate)) +
+ geom_col() +
+ labs(title = "Coeficientes del modelo OLS") +
+ theme_bw() +
+ theme(axis.text.x = element_text(size = 8, angle = 90))
+```
+ 
+## Backward
+
+### VIF de las variables seleccionadas
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(faraway)
+modelo_backward %>% vif
+```
+
+### MSE del entrenamiento
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo_backward %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
+(mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
+```
+
+### Indicadores predictivos con la base de datos de entrenamiento
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(caret)
+postResample(predicciones_train, obs = datos.train$Recuento)
+```
+
+## Stepwise
+
+### Resumen del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+step(object = lm(formula = Recuento ~ 1, data = datos.train),
+ direction = "both",
+ scope = formula(lm(Recuento~.,data=datos)),
+ trace = F,
+ k = log(nrow(datos.train))) -> modelo_step
+modelo_step %>% summary
+```
+
+### AIC del modelo
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+AIC(modelo_step)
+```
+
+
+## Stepwise
+
+### Coeficientes del modelo
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(tidyverse)
+library(broom)
+modelo_step %>% 
+ tidy %>% 
+ filter(term != "(Intercept)") %>% 
+ ggplot(aes(x = term, y = estimate)) +
+ geom_col() +
+ labs(title = "Coeficientes del modelo OLS") +
+ theme_bw() +
+ theme(axis.text.x = element_text(size = 8, angle = 90))
+```
+ 
+## Stepwise
+
+### VIF de las variables seleccionadas
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(faraway)
+modelo_step %>% vif
+```
+
+### MSE del entrenamiento
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo_step %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
+(mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
+```
+
+### Indicadores predictivos con la base de datos de entrenamiento
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(caret)
+postResample(predicciones_train, obs = datos.train$Recuento)
+```
+
+## Comparación de modelos
+
+\changefontsizes{7pt}
+
++------------+----------+-------------------+------------+------------+-----------+
+| *Método*   | $AIC$    |$R^2$ **ajustado** | $RMSE$     | $R^2$      | $MAE$     |    
++------------+----------+-------------------+------------+------------+-----------+
+| *Forward*  | 973.239  | 99.54             | 4.8186162  | 0.9955231  | 3.7545822 |
++------------+----------+-------------------+------------+------------+-----------+
+| *Backward* | 973.239  | 99.54             | 4.8186162  | 0.9955231  | 3.7545822 |
++------------+----------+-------------------+------------+------------+-----------+
+| *Stepwise* | 976.0164 | 99.53             | 4.8906414  | 0.9953883  | 3.8580781 |
++------------+----------+-------------------+------------+------------+-----------+
+
+Se selecciona al modelo Stepwise, por lo que el modelo final considerará a las variables Altura y Temperatura. La variable Macho, no tiene gran aporte predictivo, por ello, fue descartado.
+
+# Modelo de regresión lineal final
+
+## Resumen del modelo
+
+A continuación presentamos el modelo final:
+
+$$Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\epsilon_i$$
+
+\changefontsizes{5pt}
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+lm(Recuento~Temperatura+Altura,datos.train) -> modelo_final
+summary(modelo_final)
+```
+
+## Análisis de variancia
+
+```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+anova(modelo_final)
+```
+
+## Gráfico de dispersión 3D
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "240px"}
+library(scatterplot3d)
+library(rgl)
+library(car)
+scatterplot3d(x = datos.train$Altura,y = datos.train$Temperatura, z = datos.train$Recuento, pch=16, highlight.3d=TRUE, xlab = "Altura", ylab = "Temperatura", zlab = "Recuento",angle = 80,
+ type="h", main="3D Scatterplot")
+```
+
+## Gráfico de dispersión 3D
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "240px"}
+
+lm(Recuento ~ Altura+Temperatura, data = datos.train) %>% avPlots
+```
+
+## Análisis de supuestos
+
+### Valores predichos vs Residuos
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 <- modelo_final
+par(mfrow = c(1,1))
+plot(modelo1,which = 1)
+```
+
+## Análisis de supuestos
+
+### Gráfico de probabilidad normal de residuos
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+plot(modelo1,which = 2)
+```
+## Análisis de supuestos
+
+### Valores predichos vs Raíz de los residuos estandarizados absolutos
+ 
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+plot(modelo1,which = 3)
+```
+## Análisis de supuestos
+
+### Leverage vs Residuos estandarizados
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+plot(modelo1,which = 5)
+```
+## Análisis de supuestos
+
+### Distancias de Cook
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+plot(modelo1,which = 4)
+```
+
+
+## Análisis de supuestos
+
+### Distancias de Cook vs Leverage
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+plot(modelo1,which = 6)
+```
+
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la normalidad de residuos
+
+#### Simetría de los residuos
+
+\changefontsizes{7pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>%
+  residuals() %>%
+  moments::skewness()
+```
+
+#### Curtosis de los residuos
+
+\changefontsizes{7pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>%
+  residuals() %>%
+  moments::kurtosis()
+```
+## Análisis de supuestos
+
+### Prueba de hipótesis para la normalidad de residuos
+
+Las pruebas de hipótesis para normalidad de los residuos, con la siguiente hipótesis:
+
+$H_0:$ Los residuos estandarizados del modelo planteado se distribuyen de forma similar a la función normal.
+
+$H_1:$ Los residuos estandarizados del modelo planteado no se distribuyen de forma similar a la función normal.
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la normalidad de residuos
+
+\changefontsizes{7pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>%
+  rstudent %>%
+  stats::shapiro.test()
+modelo1 %>%
+  rstudent %>%
+  nortest::ad.test()
+modelo1 %>%
+  rstudent %>%
+  ks.test("pnorm")
+```
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la homocedasticidad
+
+Por otro lado, al evaluar el supuesto de homocedasticidad y constrastar con la siguiente hipótesis:
+
+$H_0:$ La variancia de los errores del modelo planteado es homocedástica.
+
+$H_1:$ La variancia de los errores del modelo planteado es heterocedástica.
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la homocedasticidad
+
+\changefontsizes{4pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>%
+  ncvTest
+
+library(olsrr)
+modelo1 %>%
+  ols_test_breusch_pagan
+
+library(lmtest)
+modelo1 %>%
+  bptest
+```
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la autocorrelación de residuos
+
+Al evaluar el supuesto de autocorrelación y constrastar la siguiente hipótesis:
+
+$H_0:$ Los errores del modelo planteado no están autocorrelacionados.
+
+$H_1:$ Los errores del modelo planteado están autocorrelacionados.
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la autocorrelación de residuos
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>% residuals() %>% TSA::acf()
+```
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la autocorrelación de residuos
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>% residuals() -> residuales
+plot(1:nrow(datos.train),residuales, type = "l")
+```
+## Análisis de supuestos
+
+### Prueba de hipótesis para la autocorrelación de residuos
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>% dwtest(alternative = "two.sided")
+```
+
+## Análisis de supuestos
+
+### Prueba de hipótesis para la autocorrelación de residuos
+
+\changefontsizes{7pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>% car::durbinWatsonTest(alternative = "two.sided",
+                            max.lag=10,
+                            reps=1e3)
+```
+
+## Análisis de supuestos
+
+### Leverages
+
+\changefontsizes{4pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+
+modelo1 %>% model.matrix -> X1
+X1 %*% solve(t(X1)%*%X1) %*% t(X1) -> H1
+
+round((modelo1 %>% hatvalues),4)
+
+3 -> k1
+length(datos.train$Recuento) -> n1
+
+2*k1/n1
+
+data.frame(leverage=diag(H1)>2*k1/n1,
+ influencial=abs(modelo1 %>% rstudent)>2) %>%
+  filter(influencial %in% "TRUE") %>%
+  row.names()
+```
+
+## Análisis de supuestos
+
+### Leverages
+
+Entonces, una observación podrá ser considerada como un leverage si $h_ii>2\frac{k}{n}$, donde $k$ es el número de coeficinetes de regresión y $n$ es el tamaño de la muetra, siempre y cuando $2\frac{k}{n}<1$
+
+Para nuestro caso, tenemos que $k=3$ y nuestro $n=161$ observaciones entonces $2\frac{k}{n}<1$ = $2*(3/161)$ = $0.0373 < 1$
+
+En nuestro caso vemos que se cumple para nuestro conjunto de datos donde tenemos que $2k<n$ -> $n>2k$ -> $n>2(p+1)$donde $p$ es el número de variables predictoras para nosotros $p=2$ por tanto vemos que se cumple la condición $161>2(2+1)>2$ 
+
+## Análisis de supuestos
+
+### Leverages
+
+Por otro lado, sabemos que no todo **leverage** es un punto influenciable.
+
+Cuando se extrajo la matriz Hat para nuestras 161 obervaciones vemos que todos los valores son menores a uno.
+
+Para nuestro caso son considerados valores leverage los siguientes: 26, 44, 77, 101, 125, 127 y 151. Sabemos que estas observaciones no son necesariamente influenciales pero se apartar de la distribución o el patron de los datos.
+
+## Análisis de supuestos
+
+### Distancia de Cook
+
+\changefontsizes{4pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+round(modelo1 %>% cooks.distance(),4)
+
+data.frame(cook=(modelo1 %>% cooks.distance()),
+ influencial=modelo1 %>% cooks.distance %>% pf(3,161-3)>0.05) %>%
+  filter(influencial %in% "TRUE") %>%
+  row.names()
+
+```
+## Análisis de supuestos
+
+### Distancia de Cook
+
+Por otro lado, se ha detectdo que ninguna de las observaciones poseen una distancia de cook estadísticamente significativa. Entones, no existen observaciones que influyen en el cálculo de los betas en el modelo de regresión.
+
+## Análisis de supuestos
+
+### COVARIATO
+
+\changefontsizes{3pt}
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo1 %>% covratio() 
+3 -> k
+length(datos.train$Recuento) -> n
+n > 3*k
+
+COVRATIO <- modelo1 %>% covratio() > 1+3*k/n | modelo1 %>% covratio() < 1-3*k/n
+COVRATIO <- data.frame(id = seq(1:161), COVRATIO)
+TRUES <- COVRATIO %>%
+  filter(COVRATIO %in% "TRUE")
+TRUES$id
+```
+
+## Análisis de supuestos
+
+### COVRATIO
+
+Las observaciones con un alto COVRATIO fueron: 17, 26, 57, 100, 102 y 123. Estas observaciones influyen en el calculo de los estimadores del error estándar.
+
+## Poder predictivo del modelo final
+
+### MSE del modelo final sobre los datos de prueba
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+modelo_step %>% predict(newdata = data.frame(datos.test)) -> predicciones_test
+(mean((predicciones_train - datos.train$Recuento)^2) -> test_mse)
+```
+
+### Indicadores predictivos con la base de datos de prueba
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "800px"}
+library(caret)
+postResample(predicciones_test, obs = datos.test$Recuento)
+```
+
+<!--chapter:end:index.Rmd-->
+
