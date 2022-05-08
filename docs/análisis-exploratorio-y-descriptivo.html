@@ -583,8 +583,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="análisis-descriptivo" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Análisis descriptivo<a href="análisis-exploratorio-y-descriptivo.html#análisis-descriptivo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Los datos cuenta con un total de 200 observaciones (n=200).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="análisis-exploratorio-y-descriptivo.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
-<span id="cb2-2"><a href="análisis-exploratorio-y-descriptivo.html#cb2-2" aria-hidden="true" tabindex="-1"></a>summarytools<span class="sc">::</span><span class="fu">descr</span>(datos)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="análisis-exploratorio-y-descriptivo.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(summarytools)</span>
+<span id="cb1-2"><a href="análisis-exploratorio-y-descriptivo.html#cb1-2" aria-hidden="true" tabindex="-1"></a>summarytools<span class="sc">::</span><span class="fu">descr</span>(datos)</span></code></pre></div>
 <pre><code>Descriptive Statistics  
 datos  
 N: 200  
@@ -606,7 +606,7 @@ N: 200
          Kurtosis    -1.19     -1.22      -1.13         -1.11
           N.Valid   200.00    200.00     200.00        200.00
         Pct.Valid   100.00    100.00     100.00        100.00</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="análisis-exploratorio-y-descriptivo.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="análisis-exploratorio-y-descriptivo.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos)</span></code></pre></div>
 <pre><code>  Temperatura       Altura         Humedad          Macho     Urbano      Recuento    
  Min.   :12.0   Min.   : 25.0   Min.   :70.29   Machos :160   No: 94   Min.   : 67.0  
  1st Qu.:16.0   1st Qu.:139.2   1st Qu.:75.75   Hembras: 40   Sí:106   1st Qu.:134.0  
@@ -617,36 +617,36 @@ N: 200
 </div>
 <div id="gráficos-exploratorios" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Gráficos exploratorios<a href="análisis-exploratorio-y-descriptivo.html#gráficos-exploratorios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="análisis-exploratorio-y-descriptivo.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="análisis-exploratorio-y-descriptivo.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-2"><a href="análisis-exploratorio-y-descriptivo.html#cb5-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="análisis-exploratorio-y-descriptivo.html#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(is.numeric) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="análisis-exploratorio-y-descriptivo.html#cb5-4" aria-hidden="true" tabindex="-1"></a>    pairs</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="análisis-exploratorio-y-descriptivo.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
 <span id="cb6-2"><a href="análisis-exploratorio-y-descriptivo.html#cb6-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="análisis-exploratorio-y-descriptivo.html#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(is.numeric) <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="análisis-exploratorio-y-descriptivo.html#cb6-4" aria-hidden="true" tabindex="-1"></a>    pairs</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="análisis-exploratorio-y-descriptivo.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb7-2"><a href="análisis-exploratorio-y-descriptivo.html#cb7-2" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="análisis-exploratorio-y-descriptivo.html#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select_if</span>(is.numeric) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="análisis-exploratorio-y-descriptivo.html#cb7-4" aria-hidden="true" tabindex="-1"></a>    pairs.panels</span></code></pre></div>
+<span id="cb6-4"><a href="análisis-exploratorio-y-descriptivo.html#cb6-4" aria-hidden="true" tabindex="-1"></a>    pairs.panels</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="análisis-exploratorio-y-descriptivo.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="análisis-exploratorio-y-descriptivo.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb7-3"><a href="análisis-exploratorio-y-descriptivo.html#cb7-3" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="análisis-exploratorio-y-descriptivo.html#cb7-4" aria-hidden="true" tabindex="-1"></a>    ggpairs <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="análisis-exploratorio-y-descriptivo.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb8-2"><a href="análisis-exploratorio-y-descriptivo.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb8-3"><a href="análisis-exploratorio-y-descriptivo.html#cb8-3" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="análisis-exploratorio-y-descriptivo.html#cb8-4" aria-hidden="true" tabindex="-1"></a>    ggpairs <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="análisis-exploratorio-y-descriptivo.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb9-2"><a href="análisis-exploratorio-y-descriptivo.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb9-3"><a href="análisis-exploratorio-y-descriptivo.html#cb9-3" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="análisis-exploratorio-y-descriptivo.html#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggpairs</span>(<span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">&quot;density&quot;</span>, <span class="at">combo =</span> <span class="st">&quot;box_no_facet&quot;</span>), <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">&quot;points&quot;</span>, </span>
-<span id="cb9-5"><a href="análisis-exploratorio-y-descriptivo.html#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">combo =</span> <span class="st">&quot;dot_no_facet&quot;</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
+<span id="cb8-4"><a href="análisis-exploratorio-y-descriptivo.html#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggpairs</span>(<span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">&quot;density&quot;</span>, <span class="at">combo =</span> <span class="st">&quot;box_no_facet&quot;</span>), <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">&quot;points&quot;</span>, </span>
+<span id="cb8-5"><a href="análisis-exploratorio-y-descriptivo.html#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">combo =</span> <span class="st">&quot;dot_no_facet&quot;</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="análisis-exploratorio-y-descriptivo.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Generando gráfico de dispersión</span></span>
-<span id="cb10-2"><a href="análisis-exploratorio-y-descriptivo.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-3"><a href="análisis-exploratorio-y-descriptivo.html#cb10-3" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="análisis-exploratorio-y-descriptivo.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Altura,<span class="at">y=</span>Recuento))<span class="sc">+</span></span>
-<span id="cb10-5"><a href="análisis-exploratorio-y-descriptivo.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-6"><a href="análisis-exploratorio-y-descriptivo.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;DIAGRAMA DE DISPERSIÓN&quot;</span>,</span>
-<span id="cb10-7"><a href="análisis-exploratorio-y-descriptivo.html#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">&quot;Altura vs Recuento&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-8"><a href="análisis-exploratorio-y-descriptivo.html#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-9"><a href="análisis-exploratorio-y-descriptivo.html#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_test</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="análisis-exploratorio-y-descriptivo.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Generando gráfico de dispersión</span></span>
+<span id="cb9-2"><a href="análisis-exploratorio-y-descriptivo.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-3"><a href="análisis-exploratorio-y-descriptivo.html#cb9-3" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="análisis-exploratorio-y-descriptivo.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Altura,<span class="at">y=</span>Recuento))<span class="sc">+</span></span>
+<span id="cb9-5"><a href="análisis-exploratorio-y-descriptivo.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">colour=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-6"><a href="análisis-exploratorio-y-descriptivo.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title =</span> <span class="st">&quot;DIAGRAMA DE DISPERSIÓN&quot;</span>,</span>
+<span id="cb9-7"><a href="análisis-exploratorio-y-descriptivo.html#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">&quot;Altura vs Recuento&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-8"><a href="análisis-exploratorio-y-descriptivo.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-9"><a href="análisis-exploratorio-y-descriptivo.html#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_test</span>()</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>

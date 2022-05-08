@@ -585,8 +585,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A continuación presentamos el modelo completo:</p>
 <p><span class="math display">\[Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\beta_3*Humedad+\beta_4*Hembras~+\]</span></p>
 <p><span class="math display">\[\beta_5*Urbano+\epsilon_i\]</span></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(Recuento<span class="sc">~</span>.,datos) <span class="ot">-&gt;</span> modelo_completo</span>
-<span id="cb11-2"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_completo)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(Recuento<span class="sc">~</span>.,datos) <span class="ot">-&gt;</span> modelo_completo</span>
+<span id="cb10-2"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_completo)</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = Recuento ~ ., data = datos)
@@ -612,7 +612,7 @@ F-statistic:  8185 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></p
 </div>
 <div id="análisis-de-variancia" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Análisis de variancia<a href="modelo-de-regresión-lineal-multiple-completo.html#análisis-de-variancia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo_completo)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="modelo-de-regresión-lineal-multiple-completo.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo_completo)</span></code></pre></div>
 <pre><code>Analysis of Variance Table
 
 Response: Recuento
