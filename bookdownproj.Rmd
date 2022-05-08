@@ -613,3 +613,6 @@ modelo_step %>% predict(newdata = data.frame(datos.test)) -> predicciones_test
 library(caret)
 postResample(predicciones_test, obs = datos.test$Recuento)
 ```
+
+<!--chapter:end:index.Rmd-->
+
