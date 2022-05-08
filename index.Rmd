@@ -1,7 +1,14 @@
 ---
 title: "Aplicación del modelo lineal general"
 author: "Vásquez V., C.R.A."
-date: "`r Sys.Date()`"
+date: '`r format(Sys.time(), "%d %B, %Y")`'
+output:
+  bookdown::html_document2:
+    includes:
+      in_header: header.html
+  bookdown::gitbook:
+    includes:
+      in_header: header.html
 subtitle: Recuento de escarabajos en un área
 institute: InkaStats - Data Science Solutions S.A.C.
 site: bookdown::bookdown_site
@@ -17,6 +24,38 @@ text-align: justify}
 knitr::opts_chunk$set(echo = FALSE)
 options(max.print = 9999,
         scipen = 999)
+```
+
+```{r htmlTemp3, echo=FALSE, eval=TRUE}
+codejs <- readr::read_lines("js/codefolding.js")
+collapsejs <- readr::read_lines("js/collapse.js")
+transitionjs <- readr::read_lines("js/transition.js")
+
+htmlhead <- 
+  paste('
+<script>',
+paste(transitionjs, collapse = "\n"),
+'</script>
+<script>',
+paste(collapsejs, collapse = "\n"),
+'</script>
+<script>',
+paste(codejs, collapse = "\n"),
+'</script>
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+.row { display: flex; }
+.collapse { display: none; }
+.in { display:block }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+', sep = "\n")
+
+readr::write_lines(htmlhead, path = "header.html")
 ```
 
 # Reconocimiento de variables
@@ -49,41 +88,44 @@ datos$Macho <- factor(datos$Macho,
 datos$Urbano <- factor(datos$Urbano,
                       levels = c(0,1),
                       labels = c("No","Sí"))
+```
 
+
+```{r, echo = T, eval=T, comment="", message=F, warning= F}
 library(summarytools)
 summarytools::descr(datos)
 ```
 
 \changefontsizes{7pt}
 
-```{r, echo = F, eval=T, comment="", message=F, warning= F}
+```{r, echo = T, eval=T, comment="", message=F, warning= F}
 summary(datos)
 ```
 
 ## Gráficos exploratorios
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(dplyr)
 datos %>%
     select_if(is.numeric) %>%
     pairs
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(psych)
 datos %>%
     select_if(is.numeric) %>%
     pairs.panels
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(ggplot2)
 library(GGally)
 datos %>%
     ggpairs + theme_bw()
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(ggplot2)
 library(GGally)
 datos %>%
@@ -91,8 +133,8 @@ datos %>%
         combo = "dot_no_facet")) + theme_bw()
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-#Generando gráfico de dispersión del número de bayas cosechables vs los Kg Cosechados por hectárea
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
+#Generando gráfico de dispersión
 library(ggplot2)
 datos %>% 
   ggplot(aes(x=Altura,y=Recuento))+
@@ -109,18 +151,20 @@ datos %>%
 
 A continuación presentamos el modelo completo:
 
-$$Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\beta_3*Humedad+\beta_4*Hembras+\beta_5*Urbano+\epsilon_i$$
+$$Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\beta_3*Humedad+\beta_4*Hembras~+$$
+
+$$\beta_5*Urbano+\epsilon_i$$
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 lm(Recuento~.,datos) -> modelo_completo
 summary(modelo_completo)
 ```
 
 ## Análisis de variancia
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 anova(modelo_completo)
 ```
 
@@ -132,7 +176,7 @@ anova(modelo_completo)
 
 \changefontsizes{6pt}
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 library(caret)
 set.seed(6666)
 train <- createDataPartition(y = datos$Recuento, p = 0.80, list = FALSE, times = 1)
@@ -146,14 +190,14 @@ summary(datos.train)
 
 \changefontsizes{6pt}
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 # summarytools::descr(datos.test)
 summary(datos.test)
 ```
 
 ### Verificación de la distribución de la variable respuesta (Recuento)
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 par(mfrow = c(1,3))
 hist(datos$Recuento,
                            main = "Datos completos",
@@ -175,7 +219,7 @@ hist(datos.test$Recuento,
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 step(object = lm(formula = Recuento ~ 1, data = datos.train),
  direction = "forward",
  scope = formula(lm(Recuento~.,data=datos)),
@@ -185,7 +229,7 @@ modelo_forward %>% summary
 
 ### AIC del modelo
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 AIC(modelo_forward)
 ```
 
@@ -193,7 +237,7 @@ AIC(modelo_forward)
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(tidyverse)
 library(broom)
 modelo_forward %>% 
@@ -208,21 +252,21 @@ modelo_forward %>%
 
 ### VIF de las variables seleccionadas
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(faraway)
 modelo_forward %>% vif
 ```
 
 ### MSE del entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo_forward %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
 (mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
 ```
 
 ### Indicadores predictivos con la base de datos de entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(caret)
 postResample(predicciones_train, obs = datos.train$Recuento)
 ```
@@ -233,7 +277,7 @@ postResample(predicciones_train, obs = datos.train$Recuento)
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 step(object = lm(formula = Recuento ~ ., data = datos.train),
  direction = "backward",
  scope = list(upper = ~., lower = ~1),
@@ -243,7 +287,7 @@ modelo_backward %>% summary
 
 ### AIC del modelo
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 AIC(modelo_backward)
 ```
 
@@ -251,7 +295,7 @@ AIC(modelo_backward)
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(tidyverse)
 library(broom)
 modelo_backward %>% 
@@ -266,21 +310,21 @@ modelo_backward %>%
 
 ### VIF de las variables seleccionadas
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(faraway)
 modelo_backward %>% vif
 ```
 
 ### MSE del entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo_backward %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
 (mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
 ```
 
 ### Indicadores predictivos con la base de datos de entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(caret)
 postResample(predicciones_train, obs = datos.train$Recuento)
 ```
@@ -291,7 +335,7 @@ postResample(predicciones_train, obs = datos.train$Recuento)
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 step(object = lm(formula = Recuento ~ 1, data = datos.train),
  direction = "both",
  scope = formula(lm(Recuento~.,data=datos)),
@@ -302,7 +346,7 @@ modelo_step %>% summary
 
 ### AIC del modelo
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 AIC(modelo_step)
 ```
 
@@ -310,7 +354,7 @@ AIC(modelo_step)
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(tidyverse)
 library(broom)
 modelo_step %>% 
@@ -325,21 +369,21 @@ modelo_step %>%
 
 ### VIF de las variables seleccionadas
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(faraway)
 modelo_step %>% vif
 ```
 
 ### MSE del entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo_step %>% predict(newdata = data.frame(datos.train)) -> predicciones_train
 (mean((predicciones_train - datos.train$Recuento)^2) -> training_mse)
 ```
 
 ### Indicadores predictivos con la base de datos de entrenamiento
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(caret)
 postResample(predicciones_train, obs = datos.train$Recuento)
 ```
@@ -367,20 +411,20 @@ $$Recuento=\beta_0+\beta_1*Temperatura+\beta_2*Altura+\epsilon_i$$
 
 \changefontsizes{5pt}
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 lm(Recuento~Temperatura+Altura,datos.train) -> modelo_final
 summary(modelo_final)
 ```
 
 ## Análisis de variancia
 
-```{r, echo = F, eval=T, message=F, warning= F, comment=""}
+```{r, echo = T, eval=T, message=F, warning= F, comment=""}
 anova(modelo_final)
 ```
 
 ## Gráfico de dispersión 3D
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(scatterplot3d)
 library(rgl)
 library(car)
@@ -388,7 +432,7 @@ scatterplot3d(x = datos.train$Altura,y = datos.train$Temperatura, z = datos.trai
  type="h", main="3D Scatterplot")
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 
 lm(Recuento ~ Altura+Temperatura, data = datos.train) %>% avPlots
 ```
@@ -397,7 +441,7 @@ lm(Recuento ~ Altura+Temperatura, data = datos.train) %>% avPlots
 
 ### Valores predichos vs Residuos
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 <- modelo_final
 par(mfrow = c(1,1))
 plot(modelo1,which = 1, pch = 16,    # optional parameters to make points blue
@@ -406,42 +450,42 @@ plot(modelo1,which = 1, pch = 16,    # optional parameters to make points blue
 
 ### Gráfico de probabilidad normal de residuos
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 plot(modelo1,which = 2, pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
 ### Valores predichos vs Raíz de los residuos estandarizados absolutos
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 plot(modelo1,which = 3, pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
 ### Leverage vs Residuos estandarizados
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 plot(modelo1,which = 5, pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
 ### Distancias de Cook
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 plot(modelo1,which = 4, pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
 ### Distancias de Cook vs Leverage
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 plot(modelo1,which = 6, pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
 ### Resumen de supuestos con check_model
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>%
   performance::check_model()
 ```
@@ -452,7 +496,7 @@ modelo1 %>%
 
 \changefontsizes{7pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>%
   residuals() %>%
   moments::skewness()
@@ -462,7 +506,7 @@ modelo1 %>%
 
 \changefontsizes{7pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>%
   residuals() %>%
   moments::kurtosis()
@@ -478,7 +522,7 @@ $H_1:$ Los residuos estandarizados del modelo planteado no se distribuyen de for
 
 \changefontsizes{7pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>%
   rstudent %>%
   stats::shapiro.test()
@@ -500,7 +544,7 @@ $H_1:$ La variancia de los errores del modelo planteado es heterocedástica.
 
 \changefontsizes{4pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>%
   ncvTest
 
@@ -523,28 +567,28 @@ $H_0:$ Los errores del modelo planteado no están autocorrelacionados.
 
 $H_1:$ Los errores del modelo planteado están autocorrelacionados.
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% residuals() %>% TSA::acf()
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% residuals() -> residuales
 plot(1:nrow(datos.train),residuales, type = "l", pch = 16,    # optional parameters to make points blue
      col = '#006EA1', xlab = "Índice")
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% forecast::checkresiduals(pch = 16,    # optional parameters to make points blue
      col = '#006EA1')
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% dwtest(alternative = "two.sided")
 ```
 
 \changefontsizes{7pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% car::durbinWatsonTest(alternative = "two.sided",
                             max.lag=10,
                             reps=1e3)
@@ -554,7 +598,7 @@ modelo1 %>% car::durbinWatsonTest(alternative = "two.sided",
 
 \changefontsizes{4pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 
 modelo1 %>% model.matrix -> X1
 X1 %*% solve(t(X1)%*%X1) %*% t(X1) -> H1
@@ -588,7 +632,7 @@ Para nuestro caso son considerados valores leverage los siguientes: 26, 44, 77, 
 
 \changefontsizes{4pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 round(modelo1 %>% cooks.distance(),4)
 
 data.frame(cook=(modelo1 %>% cooks.distance()),
@@ -604,7 +648,7 @@ Por otro lado, se ha detectdo que ninguna de las observaciones poseen una distan
 
 \changefontsizes{3pt}
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% covratio() 
 3 -> k
 length(datos.train$Recuento) -> n
@@ -623,14 +667,14 @@ Las observaciones con un alto COVRATIO fueron: 17, 26, 57, 100, 102 y 123. Estas
 
 ### MSE del modelo final sobre los datos de prueba
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo_step %>% predict(newdata = data.frame(datos.test)) -> predicciones_test
 (mean((predicciones_train - datos.train$Recuento)^2) -> test_mse)
 ```
 
 ### Indicadores predictivos con la base de datos de prueba
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+```{r, echo = T, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(caret)
 postResample(predicciones_test, obs = datos.test$Recuento)
 ```
