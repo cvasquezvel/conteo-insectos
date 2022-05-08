@@ -1,0 +1,32 @@
+{
+    "id": "6D94FA26",
+    "path": "~/InkaStats/GIT/conteo-insectos/index.Rmd",
+    "project_path": "index.Rmd",
+    "type": "r_markdown",
+    "hash": "2806443249",
+    "contents": "",
+    "dirty": false,
+    "created": 1651964702656.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "390,78",
+        "scrollLine": "373",
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "395:75",
+        "last_setup_crc32": ""
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1651973535,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1651973535166,
+    "read_only": false,
+    "read_only_alternatives": []
+}

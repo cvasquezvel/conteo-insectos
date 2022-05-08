@@ -1,0 +1,58 @@
+h1:reconocimiento-de-variables Reconocimiento de variables
+h1:análisis-exploratorio-y-descriptivo Análisis exploratorio y descriptivo
+h2:análisis-descriptivo Análisis descriptivo
+h2:gráficos-exploratorios Gráficos exploratorios
+h1:modelo-de-regresión-lineal-multiple-completo Modelo de regresión lineal multiple completo
+h2:resumen-del-modelo Resumen del modelo
+h2:análisis-de-variancia Análisis de variancia
+h1:selección-de-variables-paso-a-paso Selección de variables paso a paso
+h2:partición-inicial-de-la-base-de-datos Partición inicial de la base de datos
+h3:resumen-de-la-base-de-datos-de-entrenamiento Resumen de la base de datos de entrenamiento
+h3:resumen-de-la-base-de-datos-de-prueba Resumen de la base de datos de prueba
+h3:verificación-de-la-distribución-de-la-variable-respuesta-recuento Verificación de la distribución de la variable respuesta (Recuento)
+h2:forward Forward
+h3:resumen-del-modelo-1 Resumen del modelo
+h3:aic-del-modelo AIC del modelo
+h3:coeficientes-del-modelo Coeficientes del modelo
+h3:vif-de-las-variables-seleccionadas VIF de las variables seleccionadas
+h3:mse-del-entrenamiento MSE del entrenamiento
+h3:indicadores-predictivos-con-la-base-de-datos-de-entrenamiento Indicadores predictivos con la base de datos de entrenamiento
+h2:backward Backward
+h3:resumen-del-modelo-2 Resumen del modelo
+h3:aic-del-modelo-1 AIC del modelo
+h3:coeficientes-del-modelo-1 Coeficientes del modelo
+h3:vif-de-las-variables-seleccionadas-1 VIF de las variables seleccionadas
+h3:mse-del-entrenamiento-1 MSE del entrenamiento
+h3:indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-1 Indicadores predictivos con la base de datos de entrenamiento
+h2:stepwise Stepwise
+h3:resumen-del-modelo-3 Resumen del modelo
+h3:aic-del-modelo-2 AIC del modelo
+h3:coeficientes-del-modelo-2 Coeficientes del modelo
+h3:vif-de-las-variables-seleccionadas-2 VIF de las variables seleccionadas
+h3:mse-del-entrenamiento-2 MSE del entrenamiento
+h3:indicadores-predictivos-con-la-base-de-datos-de-entrenamiento-2 Indicadores predictivos con la base de datos de entrenamiento
+h2:comparación-de-modelos Comparación de modelos
+h1:modelo-de-regresión-lineal-final Modelo de regresión lineal final
+h2:resumen-del-modelo-4 Resumen del modelo
+h2:análisis-de-variancia-1 Análisis de variancia
+h2:gráfico-de-dispersión-3d Gráfico de dispersión 3D
+h2:análisis-de-supuestos Análisis de supuestos
+h3:valores-predichos-vs-residuos Valores predichos vs Residuos
+h3:gráfico-de-probabilidad-normal-de-residuos Gráfico de probabilidad normal de residuos
+h3:valores-predichos-vs-raíz-de-los-residuos-estandarizados-absolutos Valores predichos vs Raíz de los residuos estandarizados absolutos
+h3:leverage-vs-residuos-estandarizados Leverage vs Residuos estandarizados
+h3:distancias-de-cook Distancias de Cook
+h3:distancias-de-cook-vs-leverage Distancias de Cook vs Leverage
+h3:prueba-de-hipótesis-para-la-normalidad-de-residuos Prueba de hipótesis para la normalidad de residuos
+h4:simetría-de-los-residuos Simetría de los residuos
+h4:curtosis-de-los-residuos Curtosis de los residuos
+h3:prueba-de-hipótesis-para-la-normalidad-de-residuos-1 Prueba de hipótesis para la normalidad de residuos
+h3:prueba-de-hipótesis-para-la-homocedasticidad Prueba de hipótesis para la homocedasticidad
+h3:prueba-de-hipótesis-para-la-autocorrelación-de-residuos Prueba de hipótesis para la autocorrelación de residuos
+h3:leverages Leverages
+h3:distancia-de-cook Distancia de Cook
+h3:covratio COVRATIO
+h2:poder-predictivo-del-modelo-final Poder predictivo del modelo final
+h3:mse-del-modelo-final-sobre-los-datos-de-prueba MSE del modelo final sobre los datos de prueba
+h3:indicadores-predictivos-con-la-base-de-datos-de-prueba Indicadores predictivos con la base de datos de prueba
+
