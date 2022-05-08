@@ -43,6 +43,7 @@ h3:valores-predichos-vs-raíz-de-los-residuos-estandarizados-absolutos Valores p
 h3:leverage-vs-residuos-estandarizados Leverage vs Residuos estandarizados
 h3:distancias-de-cook Distancias de Cook
 h3:distancias-de-cook-vs-leverage Distancias de Cook vs Leverage
+h3:resumen-de-supuestos-con-check_model Resumen de supuestos con check_model
 h3:prueba-de-hipótesis-para-la-normalidad-de-residuos Prueba de hipótesis para la normalidad de residuos
 h4:simetría-de-los-residuos Simetría de los residuos
 h4:curtosis-de-los-residuos Curtosis de los residuos

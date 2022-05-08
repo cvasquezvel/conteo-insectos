@@ -400,37 +400,50 @@ lm(Recuento ~ Altura+Temperatura, data = datos.train) %>% avPlots
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 <- modelo_final
 par(mfrow = c(1,1))
-plot(modelo1,which = 1)
+plot(modelo1,which = 1, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ### Gráfico de probabilidad normal de residuos
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-plot(modelo1,which = 2)
+plot(modelo1,which = 2, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ### Valores predichos vs Raíz de los residuos estandarizados absolutos
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-plot(modelo1,which = 3)
+plot(modelo1,which = 3, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ### Leverage vs Residuos estandarizados
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-plot(modelo1,which = 5)
+plot(modelo1,which = 5, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ### Distancias de Cook
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-plot(modelo1,which = 4)
+plot(modelo1,which = 4, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ### Distancias de Cook vs Leverage
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
-plot(modelo1,which = 6)
+plot(modelo1,which = 6, pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
+```
+
+### Resumen de supuestos con check_model
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+modelo1 %>%
+  performance::check_model()
 ```
 
 ### Prueba de hipótesis para la normalidad de residuos

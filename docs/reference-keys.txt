@@ -43,6 +43,7 @@ valores-predichos-vs-raíz-de-los-residuos-estandarizados-absolutos
 leverage-vs-residuos-estandarizados
 distancias-de-cook
 distancias-de-cook-vs-leverage
+resumen-de-supuestos-con-check_model
 prueba-de-hipótesis-para-la-normalidad-de-residuos
 simetría-de-los-residuos
 curtosis-de-los-residuos
