@@ -51,7 +51,7 @@ prueba-de-hipótesis-para-la-homocedasticidad
 prueba-de-hipótesis-para-la-autocorrelación-de-residuos
 leverages
 distancia-de-cook
-covariato
+covratio
 poder-predictivo-del-modelo-final
 mse-del-modelo-final-sobre-los-datos-de-prueba
 indicadores-predictivos-con-la-base-de-datos-de-prueba
