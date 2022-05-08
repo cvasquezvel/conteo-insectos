@@ -380,7 +380,7 @@ anova(modelo_final)
 
 ## Gráfico de dispersión 3D
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "240px"}
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
 library(scatterplot3d)
 library(rgl)
 library(car)
@@ -388,7 +388,7 @@ scatterplot3d(x = datos.train$Altura,y = datos.train$Temperatura, z = datos.trai
  type="h", main="3D Scatterplot")
 ```
 
-```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center',out.width = "240px"}
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
 
 lm(Recuento ~ Altura+Temperatura, data = datos.train) %>% avPlots
 ```
