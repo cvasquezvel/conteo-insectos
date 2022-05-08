@@ -515,6 +515,8 @@ modelo1 %>%
 
 ### Prueba de hipótesis para la autocorrelación de residuos
 
+El uso de esta prueba es recomendado cuando interviene el tiempo como variable regresora del modelo.
+
 Al evaluar el supuesto de autocorrelación y constrastar la siguiente hipótesis:
 
 $H_0:$ Los errores del modelo planteado no están autocorrelacionados.
@@ -527,7 +529,13 @@ modelo1 %>% residuals() %>% TSA::acf()
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
 modelo1 %>% residuals() -> residuales
-plot(1:nrow(datos.train),residuales, type = "l")
+plot(1:nrow(datos.train),residuales, type = "l", pch = 16,    # optional parameters to make points blue
+     col = '#006EA1', xlab = "Índice")
+```
+
+```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
+modelo1 %>% forecast::checkresiduals(pch = 16,    # optional parameters to make points blue
+     col = '#006EA1')
 ```
 
 ```{r, echo = F, eval=T, message=F, comment="", warning= F, fig.align='center'}
